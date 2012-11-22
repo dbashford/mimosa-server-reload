@@ -48,7 +48,6 @@ exports.validate = (config) ->
               newFolderPath = __determinePath folder, config.root
               if fs.existsSync newFolderPath
                 newFolders.push newFolderPath
-                console.log "Adding #{newFolderPath}"
               else
                 logger.warn "could not find serverReload.watch path [[ #{folder} ]]."
             else
