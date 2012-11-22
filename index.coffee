@@ -26,13 +26,13 @@ registration = (mimosaConfig, register) ->
   if not mimosaServer
     return logger.error "mimosa-server-reload is configured, but mimosa-server module is not installed. Cannot use mimosa-server-reload."
 
-  if mimosaConfig.modules.indexOf('mimosa-server') is -1
+  if mimosaConfig.modules.indexOf('server') is -1 and mimosaConfig.modules.indexOf('mimosa-server') is -1
     return logger.error "mimosa-server-reload is configured, but mimosa-server is not included in your project. Cannot use mimosa-server-reload."
 
   return if mimosaConfig.server.useDefaultServer
 
   # Has live reload in install, but not using it for project
-  if mimosaLiveReload? and mimosaConfig.modules.indexOf('mimosa-live-reload') is -1
+  if mimosaLiveReload? and mimosaConfig.modules.indexOf('live-reload') is -1 and mimosaConfig.modules.indexOf('mimosa-live-reload') is -1
     mimosaLiveReload = null
 
   register ['buildDone'], 'afterServer', _watchServerSource
@@ -49,7 +49,7 @@ _watchServerSource = (mimosaConfig, options, next) =>
       return true if mimosaConfig.serverReload.exclude.indexOf(name) > -1
     false
 
-  for folder in mimosaConfig.serverReload.folders
+  for folder in mimosaConfig.serverReload.watch
     if watcher?
       watcher.add(folder)
     else

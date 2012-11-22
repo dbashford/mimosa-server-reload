@@ -3,11 +3,13 @@
 fs = require 'fs'
 path = require 'path'
 
+logger = require 'logmimosa'
+
 windowsDrive = /^[A-Za-z]:\\/
 
 exports.defaults = ->
   serverReload:
-    folders:["src", "lib", "routes"]
+    watch:[]
     exclude:[]
     validate:true
 
@@ -15,26 +17,20 @@ exports.placeholder = ->
   """
   \t
 
-    # serverReload:                         # Configuration for automatically restarting a user's
-                                            # server.  Used in conjunction with the
-                                            # 'mimosa-server' module.
-      # folders: ["src", "lib", "routes"]   # A list of folders whose contents trigger a server
-                                            # reload when they are changed.  Can be relative to the
-                                            # base of the project (location of mimosa-config) or can
-                                            # be absolute
-      # exclude:[]                          # An array of regexs or strings that match files to
-                                            # exclude from reloading the server. Can be a mix of
-                                            # regex and strings. Strings should be a path relative
-                                            # to the base of the project (location of mimosa-config)
-                                            # or absolute.
-                                            # ex: [/\.txt$/,"src/README.md"]
-      # validate: true                      # set validate to false if you do not want Mimosa to
-                                            # validate that the changed files inside 'folders' are
-                                            # safe to use.  If you, for instance, write not-
-                                            # compilable CoffeeScript inside one of the 'folder's,
-                                            # when Mimosa restarts your server, your server will
-                                            # fail and Mimosa will error out.
-
+    # serverReload:          # Configuration for automatically restarting a user's server. Used in
+                             # conjunction with the 'mimosa-server' module.
+      # watch: []            # A list of folders and files whose contents trigger a server reload
+                             # when they are changed.  Can be relative to the base of the project
+                             # (location of mimosa-config) or can be absolute
+      # exclude:[]           # An array of regexs or strings that match files to exclude from
+                             # reloading the server. Can be a mix of regex and strings. Strings
+                             # should be a path relative to the base of the project (location of
+                             # mimosa-config) or absolute. ex: [/\.txt$/,"src/README.md"]
+      # validate: true       # set validate to false if you do not want Mimosa to validate that the
+                             # changed files inside 'watch' are safe to use. If you, for instance,
+                             # write not-compilable CoffeeScript inside one of the 'folder's, when
+                             # Mimosa restarts your server, your server will fail and Mimosa will
+                             # error out.
 
   """
 
@@ -44,23 +40,24 @@ exports.validate = (config) ->
     serverReload = config.serverReload
     if typeof config.minify is "object" and not Array.isArray(config.minify)
 
-      if serverReload.folders?
-        if Array.isArray(serverReload.folders)
+      if serverReload.watch?
+        if Array.isArray(serverReload.watch)
           newFolders = []
-          for folder in serverReload.folders
+          for folder in serverReload.watch
             if typeof folder is "string"
               newFolderPath = __determinePath folder, config.root
               if fs.existsSync newFolderPath
                 newFolders.push newFolderPath
+                console.log "Adding #{newFolderPath}"
               else
-                errors.push "serverReload.folders paths must exist, could not find [[ #{folder} ]]."
+                logger.warn "could not find serverReload.watch path [[ #{folder} ]]."
             else
-              errors.push "serverReload.folders must be an array of strings."
-          serverReload.folders =  newFolders
+              errors.push "serverReload.watch must be an array of strings."
+          serverReload.watch =  newFolders
         else
-          errors.push "serverReload.folders must be an array."
+          errors.push "serverReload.watch must be an array."
       else
-        errors.push "serverReload.folders must be present."
+        errors.push "serverReload.watch must be present."
 
       if serverReload.exclude?
         if Array.isArray(serverReload.exclude)

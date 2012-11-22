@@ -15,7 +15,7 @@ Works with Mimosa 0.6.0+
 
 ## Functionality
 
-The `mimosa-server-reload` module will point itself at a list of configurable folders and when the contents (recursive) of those folders change, it will work with both the `mimosa-server` and `mimosa-live-reload` modules to restart the user's server.
+The `mimosa-server-reload` module will point itself at a list of configurable files/folders and when the contents (recursive) of those change, it will work with both the `mimosa-server` and `mimosa-live-reload` modules to restart the user's server.
 
 If you are using `mimosa-server-reload`, as part of restarting your server, this module shuts down the web socket connections that enable live reload so that the server can be closed.  It restarts the server-side of the web socket connection, but does not reconnect with the client.  So after the server is restarted, you need to refresh the browser to reconnect live reload.
 
@@ -31,11 +31,11 @@ Some prerequisites for this module are:
 
 ```
 serverReload:
-  folders:["src", "lib", "routes"]
+  watch:[]
   exclude:[]
   validate:true
 ```
 
-* `folders`: an array of folders whose contents will trigger a server restart when changed
+* `watch`: an array of folders and files whose contents will trigger a server restart when changed.  This empty array must be overridden to take advantage of the module.
 * `exclude`: an array of strings and/or regexs, the list of files and file patterns to exclude from restarting the server. Can be a mix of regexes and strings.  ex: `ex: [/\.txt$/, "vendor/jqueryui.js"]`. Can be left off or made null if not needed.
 * `validate`: a boolean, whether or not to validate changed files. When true, the default, `mimosa-server-reload` will `require()` the changed file.  If the require fails, because it is invalid CoffeeScript/JavaScript for instance, Mimosa will not attempt to restart the server since the restart will likely fail.
