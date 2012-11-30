@@ -35,7 +35,7 @@ registration = (mimosaConfig, register) ->
   if mimosaLiveReload? and mimosaConfig.modules.indexOf('live-reload') is -1 and mimosaConfig.modules.indexOf('mimosa-live-reload') is -1
     mimosaLiveReload = null
 
-  register ['buildDone'], 'afterServer', _watchServerSource
+  register ['postBuild'], 'afterServer', _watchServerSource
 
 _watchServerSource = (mimosaConfig, options, next) =>
   watcher = null

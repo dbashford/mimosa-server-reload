@@ -11,7 +11,8 @@ For more information regarding Mimosa, see http://mimosajs.com
 
 Add `'mimosa-server-reload'` to your list of modules. That's all! Mimosa will install the module for you when you start up.
 
-Works with Mimosa 0.6.0+
+* 0.2.0 Works with Mimosa 0.6.2+
+* 0.1.0 works with 0.6.0 + 0.6.1
 
 ## Functionality
 
@@ -36,6 +37,6 @@ serverReload:
   validate:true
 ```
 
-* `watch`: an array of folders and files whose contents will trigger a server restart when changed.  This empty array must be overridden to take advantage of the module.
-* `exclude`: an array of strings and/or regexs, the list of files and file patterns to exclude from restarting the server. Can be a mix of regexes and strings.  ex: `ex: [/\.txt$/, "vendor/jqueryui.js"]`. Can be left off or made null if not needed.
+* `watch`: an array of folders and files whose contents will trigger a server restart when changed.  This empty array must be overridden to take advantage of the module. Paths can be relative to the root of your project or absolute.
+* `exclude`: an array of strings and/or regexs, the list of files and file patterns to exclude from restarting the server. Can be a mix of regexes and strings.  ex: `ex: [/\.txt$/, "vendor/jqueryui.js"]`. Can be left off or made null if not needed. Can be relative to the root of your project or absolute.
 * `validate`: a boolean, whether or not to validate changed files. When true, the default, `mimosa-server-reload` will `require()` the changed file.  If the require fails, because it is invalid CoffeeScript/JavaScript for instance, Mimosa will not attempt to restart the server since the restart will likely fail.
