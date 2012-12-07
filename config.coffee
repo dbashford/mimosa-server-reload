@@ -9,7 +9,7 @@ windowsDrive = /^[A-Za-z]:\\/
 
 exports.defaults = ->
   serverReload:
-    watch:[]
+    watch:["server.coffee", "server.js", "server.ls", "server.iced", "routes", "src", "lib"]
     exclude:[]
     validate:true
 
@@ -19,9 +19,11 @@ exports.placeholder = ->
 
     # serverReload:          # Configuration for automatically restarting a user's server. Used in
                              # conjunction with the 'mimosa-server' module.
-      # watch: []            # A list of folders and files whose contents trigger a server reload
-                             # when they are changed.  Can be relative to the base of the project
-                             # (location of mimosa-config) or can be absolute
+      ###
+      # "watch" is an array of strings, folders and files whose contents trigger a server reload when
+      # they are changed.  Can be relative to the base of the project or can be absolute
+      ###
+      # watch: ["server.coffee", "server.js", "server.ls", "server.iced", "routes", "src", "lib"]
       # exclude:[]           # An array of regexs or strings that match files to exclude from
                              # reloading the server. Can be a mix of regex and strings. Strings
                              # should be a path relative to the base of the project (location of
@@ -48,8 +50,6 @@ exports.validate = (config) ->
               newFolderPath = __determinePath folder, config.root
               if fs.existsSync newFolderPath
                 newFolders.push newFolderPath
-              else
-                logger.warn "could not find serverReload.watch path [[ #{folder} ]]."
             else
               errors.push "serverReload.watch must be an array of strings."
           serverReload.watch =  newFolders
