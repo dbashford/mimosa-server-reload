@@ -1,11 +1,8 @@
 "use strict"
 
 fs = require 'fs'
-path = require 'path'
 
 logger = require 'logmimosa'
-
-windowsDrive = /^[A-Za-z]:\\/
 
 exports.defaults = ->
   serverReload:
@@ -36,62 +33,27 @@ exports.placeholder = ->
 
   """
 
-exports.validate = (config) ->
+exports.validate = (config, validators) ->
   errors = []
-  if config.serverReload?
-    serverReload = config.serverReload
-    if typeof config.minify is "object" and not Array.isArray(config.minify)
+  if validators.ifExistsIsObject(errors, "serverReload config", config.serverReload)
 
-      if serverReload.watch?
-        if Array.isArray(serverReload.watch)
-          newFolders = []
-          for folder in serverReload.watch
-            if typeof folder is "string"
-              newFolderPath = __determinePath folder, config.root
-              if fs.existsSync newFolderPath
-                newFolders.push newFolderPath
-            else
-              errors.push "serverReload.watch must be an array of strings."
-          serverReload.watch =  newFolders
-        else
-          errors.push "serverReload.watch must be an array."
+    if config.serverReload.watch?
+      if Array.isArray(config.serverReload.watch)
+        newFolders = []
+        for folder in config.serverReload.watch
+          if typeof folder is "string"
+            newFolderPath = validators.determinePath folder, config.root
+            if fs.existsSync newFolderPath
+              newFolders.push newFolderPath
+          else
+            errors.push "serverReload.watch must be an array of strings."
+        config.serverReload.watch =  newFolders
       else
-        errors.push "serverReload.watch must be present."
-
-      if serverReload.exclude?
-        if Array.isArray(serverReload.exclude)
-          regexes = []
-          newExclude = []
-          for exclude in serverReload.exclude
-            if typeof exclude is "string"
-              newExclude.push __determinePath exclude, config.root
-            else if exclude instanceof RegExp
-              regexes.push exclude.source
-            else
-              errors.push "serverReload.exclude must be an array of strings and/or regexes."
-              break
-
-          if regexes.length > 0
-            serverReload.excludeRegex = new RegExp regexes.join("|"), "i"
-
-          serverReload.exclude = newExclude
-        else
-          errors.push "serverReload.exclude must be an array."
-
-
-      if serverReload.validate?
-        unless typeof serverReload.validate is "boolean"
-          errors.push "serverReload.validate must be a boolean."
-      else
-        errors.push "serverReload.validate must be present."
-
-
+        errors.push "serverReload.watch must be an array."
     else
-      errors.push "serverReload configuration must be an object."
+      errors.push "serverReload.watch must be present."
+
+    validators.ifExistsFileExcludeWithRegexAndString(errors, "serverReload.exclude", config.serverReload, config.root)
+    validators.booleanMustExist(errors, "serverReload.validate", config.serverReload.validate)
 
   errors
-
-__determinePath = (thePath, relativeTo) ->
-  return thePath if windowsDrive.test thePath
-  return thePath if thePath.indexOf("/") is 0
-  path.join relativeTo, thePath
