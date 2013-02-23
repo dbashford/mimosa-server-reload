@@ -11,6 +11,7 @@ For more information regarding Mimosa, see http://mimosajs.com
 
 Add `'mimosa-server-reload'` to your list of modules. That's all! Mimosa will install the module for you when you start up.
 
+* 0.5.0 Works with Mimosa 0.9.1+
 * 0.2.0 Works with Mimosa 0.6.2+
 * 0.1.0 works with 0.6.0 + 0.6.1
 
@@ -24,7 +25,7 @@ Some prerequisites for this module are:
 
 * You must be using `mimosa-server`
 * You must start Mimosa using the `--server` or `-s` flag
-* You must not being using Mimosa's hosted server.  Your `server.useDefaultServer` value should be set to false.
+* You must not being using Mimosa's hosted server.  Your `server.defaultServer.enabled` value should be set to false.
 
 `mimosa-live-reload` is not a prereq, but this module will work with that one if it is present to shut down socket connections.
 
