@@ -24,7 +24,11 @@ registration = (mimosaConfig, register) ->
   return unless mimosaConfig.isServer
 
   if not mimosaServer
-    return logger.error "mimosa-server-reload is configured, but mimosa-server module is not installed. Cannot use mimosa-server-reload."
+    return logger.error """
+mimosa-server-reload is configured, but mimosa-server module is not installed in the same module
+space as mimosa-server-reload. If both are installed, try removing mimosa-server-reload from your project
+and installing it using 'mimosa mod:install mimosa-server-reload'
+"""
 
   if mimosaConfig.modules.indexOf('server') is -1 and mimosaConfig.modules.indexOf('mimosa-server') is -1
     return logger.error "mimosa-server-reload is configured, but mimosa-server is not included in your project. Cannot use mimosa-server-reload."
