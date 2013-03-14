@@ -9,11 +9,7 @@ For more information regarding Mimosa, see http://mimosajs.com
 
 ## Usage
 
-Add `'mimosa-server-reload'` to your list of modules. That's all! Mimosa will install the module for you when you start up.
-
-* 0.5.0 Works with Mimosa 0.9.1+
-* 0.2.0 Works with Mimosa 0.6.2+
-* 0.1.0 works with 0.6.0 + 0.6.1
+Install `'mimosa-server-reload'` using the `mimosa mod:install mimosa-server-reload` command.  Do not rely on simply adding it to the list of modules in the `modules` array.  Mimosa will install it in your project, but because one of `mimosa-server-reload`'s dependencies is `mimosa-server`, which is installed inside Mimosa, `mimosa-server-reload` will not function properly.
 
 ## Functionality
 
@@ -23,6 +19,7 @@ If you are using `mimosa-server-reload`, as part of restarting your server, this
 
 Some prerequisites for this module are:
 
+* Must be installed inside Mimosa, where `mimosa-server` is located
 * You must be using `mimosa-server`
 * You must start Mimosa using the `--server` or `-s` flag
 * You must not being using Mimosa's hosted server.  Your `server.defaultServer.enabled` value should be set to false.
