@@ -7,9 +7,11 @@ This is a Mimosa module for restarting a node server when server-bound assets (l
 
 For more information regarding Mimosa, see http://mimosajs.com
 
+Note: Version `0.7.0` requires mimosa `0.13.3` or above.
+
 ## Usage
 
-Install `'mimosa-server-reload'` using the `mimosa mod:install mimosa-server-reload` command.  Do not rely on simply adding it to the list of modules in the `modules` array.  Mimosa will install it in your project, but because one of `mimosa-server-reload`'s dependencies is `mimosa-server`, which is installed inside Mimosa, `mimosa-server-reload` will not function properly.
+Install `'mimosa-server-reload'` using the `mimosa mod:install mimosa-server-reload` command.  The `mimosa-server` module is a prereq.
 
 ## Functionality
 

@@ -4,40 +4,24 @@ logger = require 'logmimosa'
 watch = require 'chokidar'
 _ = require 'lodash'
 
-try
-  mimosaServer = require 'mimosa-server'
-catch err
-  logger.debug "No mimosa-server installed"
-
-try
-  mimosaLiveReload = require 'mimosa-live-reload'
-catch err
-  logger.debug "mimosa-live-reload is not installed."
-
 config = require './config'
 
 reloading = false
 localConfig = null
 buildDone = false
+mimosaServer = null
+mimosaLiveReload = null
 
 registration = (mimosaConfig, register) ->
   return unless mimosaConfig.isServer
 
+  mimosaServer = mimosaConfig.installedModules['mimosa-server']
   if not mimosaServer
-    return logger.error """
-mimosa-server-reload is configured, but mimosa-server module is not installed in the same module
- space as mimosa-server-reload. If both are installed, try removing mimosa-server-reload from your project
- and installing it using 'mimosa mod:install mimosa-server-reload'
-"""
-
-  if mimosaConfig.modules.indexOf('server') is -1 and mimosaConfig.modules.indexOf('mimosa-server') is -1
-    return logger.error "mimosa-server-reload is configured, but mimosa-server is not included in your project. Cannot use mimosa-server-reload."
+    return logger.error "mimosa-server-reload is configured but cannot be used unless mimosa-server installed and configured."
 
   return if mimosaConfig.server.defaultServer.enabled
 
-  # Has live reload in install, but not using it for project
-  if mimosaLiveReload? and mimosaConfig.modules.indexOf('live-reload') is -1 and mimosaConfig.modules.indexOf('mimosa-live-reload') is -1
-    mimosaLiveReload = null
+  mimosaLiveReload = mimosaConfig.installedModules['mimosa-live-reload']
 
   register ['postBuild'], 'afterServer', _watchServerSource
 
