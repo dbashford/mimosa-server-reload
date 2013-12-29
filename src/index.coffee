@@ -70,7 +70,7 @@ __cleanNodeCache = (path) ->
       require path
     catch err
       reloading = false
-      return logger.error "File at [[ #{path} ]] threw error when required so will not perform server-reload: \n #{err}"
+      return logger.error "File at [[ #{path} ]] threw error when required so will not perform server-reload: \n #{err}. Is it possible that this file isn't a JavaScript file? You might consider turning validation off."
 
   __killLiveReload()
 

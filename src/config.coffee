@@ -29,7 +29,8 @@ exports.placeholder = ->
                              # changed files inside 'watch' are safe to use. If you, for instance,
                              # write not-compilable CoffeeScript inside one of the 'folder's, when
                              # Mimosa restarts your server, your server will fail and Mimosa will
-                             # error out.
+                             # error out. Turn validation off if you are running live reload on
+                             # non-JavaScript files, like your server views.
 
   """
 
