@@ -1,6 +1,5 @@
 "use strict"
 
-logger = require 'logmimosa'
 watch = require 'chokidar'
 _ = require 'lodash'
 
@@ -11,9 +10,12 @@ localConfig = null
 buildDone = false
 mimosaServer = null
 mimosaLiveReload = null
+logger = null
 
 registration = (mimosaConfig, register) ->
   return unless mimosaConfig.isServer
+
+  logger = mimosaConfig.log
 
   mimosaServer = mimosaConfig.installedModules['mimosa-server']
   if not mimosaServer

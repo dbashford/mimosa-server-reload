@@ -2,8 +2,6 @@
 
 fs = require 'fs'
 
-logger = require 'logmimosa'
-
 exports.defaults = ->
   serverReload:
     watch:["server.coffee", "server.js", "server.ls", "server.iced", "routes", "src", "lib"]
