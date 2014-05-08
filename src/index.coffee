@@ -1,8 +1,5 @@
 "use strict"
 
-watch = require 'chokidar'
-_ = require 'lodash'
-
 config = require './config'
 
 reloading = false
@@ -30,6 +27,7 @@ registration = (mimosaConfig, register) ->
 _watchServerSource = (mimosaConfig, options, next) =>
   watcher = null
 
+  _ = require 'lodash'
   localConfig = _.clone(mimosaConfig, true)
 
   ignoreFunct = (name) ->
@@ -43,6 +41,7 @@ _watchServerSource = (mimosaConfig, options, next) =>
     if watcher?
       watcher.add(folder)
     else
+      watch = require 'chokidar'
       watcher = watch.watch(folder, {ignored: ignoreFunct, persistent: true})
       watcher.on 'add', (path) -> if buildDone then __reload path
       watcher.on 'change', (path) -> if buildDone then __reload path
