@@ -28,6 +28,19 @@ Some prerequisites for this module are:
 
 `mimosa-live-reload` is not a prereq, but this module will work with that one if it is present to shut down socket connections.
 
+### Pre-restart Hook
+
+As of version `2.2.14` of Mimosa and `0.9.0` of this module, if your server file (same location as `startServer` function) has a `preMimosaRestart` function that has been exported, mimosa-server-restart will call it before it restarts your server.  This gives you an opportunity to clean up any resources like connections to databases, etc.
+
+`preMimosaRestart` will be passed a callback.  When everything that needs cleaning up is finished, execute the callback.  This module will then execute the restart.
+
+```javascript
+exports.preMimosaRestart = function (callback) {
+  // Clean stuff up here
+  callback();
+}
+```
+
 ## Default Config
 
 ```

@@ -27,8 +27,7 @@ registration = (mimosaConfig, register) ->
 _watchServerSource = (mimosaConfig, options, next) =>
   watcher = null
 
-  _ = require 'lodash'
-  localConfig = _.clone(mimosaConfig, true)
+  localConfig = mimosaConfig
 
   ignoreFunct = (name) ->
     if mimosaConfig.serverReload.excludeRegex?
@@ -82,8 +81,15 @@ __killLiveReload = ->
   __doServerRestart()
 
 __doServerRestart = ->
-  logger.debug "Performing server reload"
+  if localConfig.server.userServerFile?.preMimosaRestart
+    logger.debug "Calling preMimosaRestart on server"
+    localConfig.server.userServerFile.preMimosaRestart __serverRestart
+  else
+    __serverRestart()
+
+__serverRestart = ->
   options = {}
+  logger.debug "Performing server reload"
   mimosaServer.startServer localConfig, options, ->
     logger.debug "Calling refresh live reload"
     __refreshLiveReload options
