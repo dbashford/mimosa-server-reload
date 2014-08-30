@@ -23,6 +23,13 @@ registration = (mimosaConfig, register) ->
   mimosaLiveReload = mimosaConfig.installedModules['mimosa-live-reload']
 
   register ['postBuild'], 'afterServer', _watchServerSource
+  register ['postBuild'], 'complete', _buildDone
+
+_buildDone = (mimosaConfig, options, next) ->
+  process.nextTick ->
+    setTimeout(( -> buildDone = true), 1250)
+
+  next()
 
 _watchServerSource = (mimosaConfig, options, next) =>
   watcher = null
@@ -47,8 +54,6 @@ _watchServerSource = (mimosaConfig, options, next) =>
       watcher.on 'unlink', (path) -> __reload path
       watcher.on 'error', (error) ->
         # just capturing error, not doing anything with it
-
-  setTimeout(( -> buildDone = true), 200)
 
   next()
 
