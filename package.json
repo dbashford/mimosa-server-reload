@@ -1,6 +1,6 @@
 {
   "name": "mimosa-server-reload",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "https://github.com/dbashford/mimosa-server-reload",
   "author": "David Bashford",
   "description": "A Mimosa module for restarting node http servers being used with Mimosa's watch command.",
@@ -22,7 +22,7 @@
     "express"
   ],
   "dependencies": {
-    "chokidar": "0.6.2"
+    "chokidar": "1.0.1"
   },
   "license": "MIT",
   "engines": {
